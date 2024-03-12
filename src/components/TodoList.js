@@ -15,8 +15,10 @@ export default function TodoList() {
   const [showAddTodo, setShowAddTodo] = useState(false);
   const [showEditTodo, setShowEditTodo] = useState(false);
   const [todoList, setTodoList] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showCompletedTodos, setShowCompletedTodos] = useState(false);
 
-  console.log(todoList);
+  console.log(searchTerm);
 
   const [idTodo, setIdTodo] = useState(null);
 
@@ -47,14 +49,36 @@ export default function TodoList() {
       )
     );
   });
+  //
+
+  const handleCompleteTodo = useCallback((id) => {
+    setTodoList((prevTodoList) =>
+      prevTodoList.map((todo) =>
+        todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
+      )
+    );
+  }, []);
+
+  const filteredUncompletedTodoList = todoList.filter(
+    (todo) =>
+      !todo.isCompleted &&
+      todo.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const filteredCompletedTodoList = todoList.filter(
+    (todo) =>
+      todo.isCompleted &&
+      todo.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const toggleCompletedTodos = () => {
+    setShowCompletedTodos(!showCompletedTodos);
+  };
 
   return (
     <div>
       {showAddTodo ? (
-        <AddTodo
-          arrTodoList={arrTodoList}
-          onShowAddTodo={onShowAddTodo}
-        ></AddTodo>
+        <AddTodo arrTodoList={arrTodoList} onShowAddTodo={onShowAddTodo} />
       ) : (
         ""
       )}
@@ -65,12 +89,12 @@ export default function TodoList() {
           onShowEditTodo={onShowEditTodo}
           idTodo={idTodo}
           editTodo={editTodo}
-        ></EditTodo>
+        />
       ) : (
         ""
       )}
 
-      <div className="flex items-center h-[100vh]">
+      <div className="flex items-center h-auto mt-[10%]">
         <div className=" mx-auto  w-full max-w-2xl ">
           <Heading />
 
@@ -81,7 +105,9 @@ export default function TodoList() {
                   type="search"
                   placeholder="Search Todos"
                   className="w-full bg-gray-50 p-4 rounded-lg border border-gray-300 text-gray-900 focus:border-blue-500 focus:ring-blue-500"
-                ></input>
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
                 <Buttonitem />
               </div>
               <button
@@ -93,26 +119,39 @@ export default function TodoList() {
               </button>
             </div>
           </div>
-
+          {/* chưa hoàn thành */}
           <Todo
-            arrTodoList={todoList}
+            arrTodoList={filteredUncompletedTodoList}
             onDelete={deleteTodo}
             onShowEditTodo={onShowEditTodo}
             onSetEdit={onSetEdit}
-          ></Todo>
+            onComplete={handleCompleteTodo}
+            searchTerm={searchTerm}
+          />
 
           <div className="pt-3">
-            <button className="flex items-center justify-center gap-3 bg-gray-400 p-2 rounded-lg text-white hover:bg-gray-600">
-              <span>Completed Todos 1</span>
+            <button
+              className="flex items-center justify-center gap-3 bg-gray-400 p-2 rounded-lg text-white hover:bg-gray-600"
+              onClick={toggleCompletedTodos}
+            >
+              <span>Completed Todos {filteredCompletedTodoList.length}</span>
               <div>
                 <FaRegArrowAltCircleRight />
               </div>
             </button>
           </div>
+          {/* đã hoàn thành */}
 
-          
-
-
+          {showCompletedTodos && (
+            <Todo
+              arrTodoList={filteredCompletedTodoList}
+              onDelete={deleteTodo}
+              onShowEditTodo={onShowEditTodo}
+              onSetEdit={onSetEdit}
+              onComplete={handleCompleteTodo}
+              searchTerm={searchTerm}
+            />
+          )}
         </div>
       </div>
     </div>

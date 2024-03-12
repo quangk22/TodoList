@@ -9,11 +9,19 @@ export default function Todo({
   onDelete,
   onShowEditTodo,
   onSetEdit,
+  onComplete,
+  searchTerm,
 }) {
   const onFormEdit = (id) => {
     onSetEdit(id);
     onShowEditTodo(true);
   };
+  //
+  const filteredTodoList = arrTodoList.filter((todo) =>
+    todo.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  //
+
   return (
     <>
       {arrTodoList.map((item) => {
@@ -37,7 +45,10 @@ export default function Todo({
                   <FaPenToSquare />
                 </div>
 
-                <div className="bg-gray-400 w-10 h-10 rounded-md text-white flex items-center justify-center hover:bg-green-800">
+                <div
+                  className="bg-gray-400 w-10 h-10 rounded-md text-white flex items-center justify-center hover:bg-green-800 "
+                  onClick={() => onComplete(item.id)}
+                >
                   <FaCheckToSlot />
                 </div>
               </div>
