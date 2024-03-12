@@ -17,6 +17,7 @@ export default function TodoList() {
   const [todoList, setTodoList] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [showCompletedTodos, setShowCompletedTodos] = useState(false);
+  const [on, setOn] = useState(false);
 
   console.log(searchTerm);
 
@@ -72,6 +73,7 @@ export default function TodoList() {
   );
 
   const toggleCompletedTodos = () => {
+    setOn((on) => !on);
     setShowCompletedTodos(!showCompletedTodos);
   };
 
@@ -129,13 +131,14 @@ export default function TodoList() {
             searchTerm={searchTerm}
           />
 
-          <div className="pt-3">
+          <div className="pt-3 ">
             <button
-              className="flex items-center justify-center gap-3 bg-gray-400 p-2 rounded-lg text-white hover:bg-gray-600"
+              className={`flex items-center justify-center gap-3  p-2 rounded-lg text-white   
+              ${on ? "bg-green-500 " : "bg-gray-400 hover:bg-gray-600"}`}
               onClick={toggleCompletedTodos}
             >
               <span>Completed Todos {filteredCompletedTodoList.length}</span>
-              <div>
+              <div className={`${on ? "rotate-90 " : ""}`}>
                 <FaRegArrowAltCircleRight />
               </div>
             </button>
