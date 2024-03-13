@@ -10,17 +10,12 @@ export default function Todo({
   onShowEditTodo,
   onSetEdit,
   onComplete,
-  searchTerm,
+  check = false,
 }) {
   const onFormEdit = (id) => {
     onSetEdit(id);
     onShowEditTodo(true);
   };
-  //
-  const filteredTodoList = arrTodoList.filter((todo) =>
-    todo.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  //
 
   return (
     <>
@@ -46,7 +41,9 @@ export default function Todo({
                 </div>
 
                 <div
-                  className="bg-gray-400 w-10 h-10 rounded-md text-white flex items-center justify-center hover:bg-green-800 "
+                  className={` w-10 h-10 rounded-md text-white flex items-center justify-center hover:bg-green-900 ${
+                    check ? "bg-gray-400" : "bg-green-800"
+                  } `}
                   onClick={() => onComplete(item.id)}
                 >
                   <FaCheckToSlot />

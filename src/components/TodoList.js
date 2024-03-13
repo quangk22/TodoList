@@ -128,13 +128,14 @@ export default function TodoList() {
             onShowEditTodo={onShowEditTodo}
             onSetEdit={onSetEdit}
             onComplete={handleCompleteTodo}
-            searchTerm={searchTerm}
+            // searchTerm={searchTerm}
+            check={true}
           />
 
           <div className="pt-3 ">
             <button
               className={`flex items-center justify-center gap-3  p-2 rounded-lg text-white   
-              ${on ? "bg-green-500 " : "bg-gray-400 hover:bg-gray-600"}`}
+              ${on ? "bg-green-800 " : "bg-gray-400 hover:bg-gray-600"}`}
               onClick={toggleCompletedTodos}
             >
               <span>Completed Todos {filteredCompletedTodoList.length}</span>
@@ -152,7 +153,7 @@ export default function TodoList() {
               onShowEditTodo={onShowEditTodo}
               onSetEdit={onSetEdit}
               onComplete={handleCompleteTodo}
-              searchTerm={searchTerm}
+              // searchTerm={searchTerm}
             />
           )}
         </div>
